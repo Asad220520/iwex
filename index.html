@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>Deutsch Worttrainer</title>
+    <style>
+      :root {
+        --bg: #0f1220;
+        --card: #171a2b;
+        --ink: #e8ebff;
+        --muted: #aab2d5;
+        --accent: #6ea8fe;
+        --ok: #3ddc84;
+        --bad: #ff6b6b;
+        --yellow: #ffd166;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial,
+          sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: linear-gradient(180deg, #0f1220, rgba(15, 18, 32, 0.85));
+        backdrop-filter: blur(6px);
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 8px 0;
+      }
+      .tabs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 8px 0 0;
+      }
+      .tabbtn {
+        appearance: none;
+        border: 1px solid #2a2f4a;
+        background: #14172a;
+        color: var(--ink);
+        padding: 10px 12px;
+        border-radius: 14px;
+        cursor: pointer;
+      }
+      .tabbtn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #0a0d1a;
+      }
+
+      .goal {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .bar {
+        flex: 1;
+        height: 10px;
+        background: #222744;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .bar > span {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, var(--ok), #52d1ff);
+        width: 0%;
+      }
+      .goal small {
+        color: var(--muted);
+      }
+
+      main {
+        padding: 16px;
+      }
+      section {
+        display: none;
+      }
+      section.active {
+        display: block;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid #242944;
+        border-radius: 16px;
+        padding: 16px;
+      }
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+      @media (min-width: 720px) {
+        .grid.cols-2 {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid #2a2f4a;
+        background: #0e1120;
+        color: var(--ink);
+      }
+      textarea {
+        min-height: 140px;
+      }
+      label {
+        display: block;
+        font-size: 14px;
+        color: var(--muted);
+        margin: 4px 0 8px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .btn {
+        appearance: none;
+        border: 1px solid #2a2f4a;
+        background: #14172a;
+        color: var(--ink);
+        padding: 10px 14px;
+        border-radius: 12px;
+        cursor: pointer;
+      }
+      .btn[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .btn.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #0b0f1c;
+      }
+      .btn.good {
+        background: var(--ok);
+        border-color: var(--ok);
+        color: #08140d;
+      }
+      .btn.bad {
+        background: var(--bad);
+        border-color: var(--bad);
+      }
+      .btn.ghost {
+        background: transparent;
+      }
+      .pill {
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #14172a;
+        border: 1px solid #2a2f4a;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .fc-word {
+        font-size: 34px;
+        text-align: center;
+        margin: 18px 0;
+      }
+      .fc-translation {
+        font-size: 22px;
+        text-align: center;
+        color: var(--yellow);
+      }
+      .big-actions {
+        display: flex;
+        gap: 10px;
+      }
+      .big-actions .btn {
+        flex: 1;
+        padding: 14px 16px;
+        font-size: 18px;
+      }
+
+      .kbd {
+        display: inline-block;
+        border: 1px solid #2a2f4a;
+        border-bottom-width: 3px;
+        border-radius: 8px;
+        padding: 6px 10px;
+        margin-right: 6px;
+        background: #12152a;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border-bottom: 1px solid #232847;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .right {
+        text-align: right;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .chip {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: #101327;
+        border: 1px solid #2a2f4a;
+        margin: 2px 6px 2px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <h1>Deutsch Worttrainer</h1>
+        <div class="goal">
+          <div class="bar" aria-label="Прогресс цели">
+            <span id="goalBar"></span>
+          </div>
+          <div id="goalText"><b>0/30</b> сегодня</div>
+        </div>
+        <div class="tabs" role="tablist">
+          <button class="tabbtn active" data-tab="plan">План</button>
+          <button class="tabbtn" data-tab="flash">Флешкарты</button>
+          <button class="tabbtn" data-tab="type">Написание</button>
+          <button class="tabbtn" data-tab="artikel">Артикли</button>
+          <button class="tabbtn" data-tab="add">Добавить слова</button>
+          <button class="tabbtn" data-tab="stats">Статистика</button>
+          <button class="tabbtn" data-tab="learned">Выученные</button>
+          <button class="tabbtn" data-tab="io">Импорт/Экспорт</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <!-- PLAN -->
+      <section id="tab-plan" class="active">
+        <div class="card grid cols-2">
+          <div>
+            <h3>Ежедневный план</h3>
+            <p class="hint">
+              Цель: <b id="dailyTargetText">30</b> слов в день. Выберите слова
+              из вашего словаря, чтобы закрепить сегодня. Засчитывается, когда
+              вы нажимаете «Знаю» во флешкартах или правильно печатаете слово.
+            </p>
+            <div class="row">
+              <input
+                type="number"
+                id="targetInput"
+                min="5"
+                max="100"
+                value="30"
+                aria-label="цель на день"
+              />
+              <button class="btn" id="saveTarget">Сохранить цель</button>
+              <button class="btn primary" id="planFill">
+                Сформировать план на сегодня
+              </button>
+            </div>
+            <p class="hint" id="planHint"></p>
+            <div id="planList"></div>
+          </div>
+          <div>
+            <h3>Быстрое добавление (по одному в строке)</h3>
+            <label for="bulk"
+              >Формат: <code>der Hund — собака</code> или
+              <code>Haus; дом</code></label
+            >
+            <textarea
+              id="bulk"
+              placeholder="der Hund — собака
+lernen — учить
+Mädchen — девочка"
+            ></textarea>
+            <div class="row">
+              <button class="btn" id="bulkAdd">Добавить строки</button>
+              <span class="hint" id="bulkHint"></span>
+            </div>
+            <p class="hint">
+              Совет: импортируйте частотные списки и формируйте план одним
+              кликом.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FLASHCARDS -->
+      <section id="tab-flash">
+        <div class="card">
+          <div id="fcDeckEmpty" class="hint">
+            Нет слов в плане на сегодня. Откройте вкладку «План» и добавьте
+            слова.
+          </div>
+          <div id="fcDeck" style="display: none">
+            <div class="pill">Осталось: <span id="fcLeft">0</span></div>
+            <div class="fc-word" id="fcWord">…</div>
+            <div class="fc-translation" id="fcTrans" hidden>…</div>
+            <div
+              class="row"
+              style="justify-content: center; gap: 10px; margin: 8px 0 16px"
+            >
+              <button class="btn" id="showTrans">Показать перевод</button>
+            </div>
+            <div
+              class="row"
+              style="justify-content: center; gap: 10px; margin: 0 0 16px"
+            >
+              <button class="btn" id="fcPlay">▶ Произнести</button>
+            </div>
+            <div class="big-actions">
+              <button class="btn bad" id="fcAgain">Не помню</button>
+              <button class="btn good" id="fcGood">Знаю</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TYPING -->
+      <section id="tab-type">
+        <div class="card">
+          <div id="tyEmpty" class="hint">Нет слов в плане на сегодня.</div>
+          <div id="tyWrap" style="display: none">
+            <div class="pill">Осталось: <span id="tyLeft">0</span></div>
+            <p class="muted">Перевод:</p>
+            <div class="fc-translation" id="tyPrompt">…</div>
+            <label for="tyInput">Введите слово по-немецки</label>
+            <input id="tyInput" autocomplete="off" spellcheck="false" />
+            <div class="row" style="margin-top: 8px">
+              <span class="hint">Удобные клавиши:</span>
+              <button class="btn kbd" data-ins="ä">ä</button>
+              <button class="btn kbd" data-ins="ö">ö</button>
+              <button class="btn kbd" data-ins="ü">ü</button>
+              <button class="btn kbd" data-ins="ß">ß</button>
+              <button class="btn" id="tyCheck">Проверить</button>
+            </div>
+            <div class="row" style="margin-top: 8px">
+              <button class="btn" id="tyPlay">▶ Произнести</button>
+            </div>
+            <p id="tyFeedback" class="hint"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ADD WORDS FORMAL -->
+      <section id="tab-add">
+        <div class="card grid cols-2">
+          <div>
+            <h3>Добавить слово</h3>
+            <label>Немецкое слово</label>
+            <input id="wDe" placeholder="das Haus" />
+            <label>Перевод</label>
+            <input id="wRu" placeholder="дом" />
+            <label>Ссылка на аудио (MP3, опц.)</label>
+            <input id="wAudio" placeholder="https://.../word.mp3" />
+            <div class="row" style="margin-top: 8px">
+              <button class="btn" id="wAdd">Добавить</button>
+              <span class="hint" id="wHint"></span>
+            </div>
+          </div>
+          <div>
+            <h3>Ваш словарь</h3>
+            <div id="dictList" class="hint">Пока пусто</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section id="tab-stats">
+        <div class="card">
+          <h3>Статистика</h3>
+          <div class="grid cols-2">
+            <div>
+              <p>Серия дней (streak): <b id="streak">0</b></p>
+              <p>
+                Сегодня правильно: <b id="todayCorrect">0</b>, ошибок:
+                <b id="todayWrong">0</b>
+              </p>
+              <p>Всего слов в словаре: <b id="totalWords">0</b></p>
+            </div>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Дата</th>
+                    <th>Засчитано</th>
+                    <th class="right">Детали</th>
+                  </tr>
+                </thead>
+                <tbody id="histBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ARTIKEL TRAINER -->
+      <section id="tab-artikel">
+        <div class="card">
+          <div id="arEmpty" class="hint">
+            Нет подходящих слов (нужны существительные с der/die/das). Добавьте
+            их и сформируйте план.
+          </div>
+          <div id="arWrap" style="display: none">
+            <div class="pill">Осталось: <span id="arLeft">0</span></div>
+            <div class="fc-word" id="arPrompt">…</div>
+            <div
+              class="row"
+              style="justify-content: center; gap: 8px; margin: 8px 0 12px"
+            >
+              <button class="btn" data-ans="der">der</button>
+              <button class="btn" data-ans="die">die</button>
+              <button class="btn" data-ans="das">das</button>
+            </div>
+            <p class="hint" id="arHint">
+              Подсказка по окончаниям: <code>-ung → die</code>,
+              <code>-chen → das</code>, <code>-er → der</code>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEARNED WORDS -->
+      <section id="tab-learned">
+        <div class="card">
+          <h3>Выученные слова</h3>
+          <div class="row" style="margin-bottom: 8px">
+            <label style="margin: 0"
+              >Дата: <input type="date" id="learnedDate"
+            /></label>
+            <button class="btn" id="learnedToday">Сегодня</button>
+          </div>
+          <div id="learnedList" class="hint">Пока нет данных</div>
+        </div>
+      </section>
+
+      <!-- IO -->
+      <section id="tab-io">
+        <div class="card grid cols-2">
+          <div>
+            <h3>Экспорт</h3>
+            <p class="hint">Скачайте JSON со словарём и статистикой.</p>
+            <button class="btn" id="exportBtn">Экспортировать JSON</button>
+          </div>
+          <div>
+            <h3>Импорт</h3>
+            <input type="file" id="importFile" accept="application/json" />
+            <button class="btn" id="importBtn">Импортировать</button>
+            <label class="row" style="margin-top: 8px">
+              <input type="checkbox" id="importReplace" />
+              Полностью заменить (очистить старые данные)
+            </label>
+            <p class="hint" id="importHint"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // ======= STORAGE LAYER =======
+      const LS = {
+        load(key, fallback) {
+          try {
+            const v = JSON.parse(localStorage.getItem(key));
+            return v ?? fallback;
+          } catch (e) {
+            return fallback;
+          }
+        },
+        save(key, val) {
+          localStorage.setItem(key, JSON.stringify(val));
+        },
+      };
+      const K = {
+        words: "dw_words",
+        stats: "dw_stats",
+        plan: "dw_today_plan",
+        donePrefix: "dw_done_", // +date
+        target: "dw_target",
+      };
+      const todayStr = () => new Date().toISOString().slice(0, 10);
+
+      function getStats() {
+        return LS.load(K.stats, {});
+      }
+      function setStats(s) {
+        LS.save(K.stats, s);
+      }
+      function getWords() {
+        return LS.load(K.words, []);
+      }
+      function setWords(w) {
+        LS.save(K.words, w);
+      }
+      function getTarget() {
+        return +LS.load(K.target, 30);
+      }
+      function setTarget(n) {
+        LS.save(K.target, n);
+      }
+      function getPlan() {
+        const p = LS.load(K.plan, { date: todayStr(), ids: [] });
+        if (p.date !== todayStr()) return { date: todayStr(), ids: [] };
+        return p;
+      }
+      function setPlan(p) {
+        LS.save(K.plan, p);
+      }
+      function getDone(date = todayStr()) {
+        return new Set(LS.load(K.donePrefix + date, []));
+      }
+      function addDone(id, date = todayStr()) {
+        const s = getDone(date);
+        s.add(id);
+        LS.save(K.donePrefix + date, Array.from(s));
+      }
+
+      // ======= UI HELPERS =======
+      const $ = (s) => document.querySelector(s);
+      const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+      function toast(el, msg) {
+        el.textContent = msg;
+        el.style.opacity = 1;
+        clearTimeout(el._t);
+        el._t = setTimeout(() => (el.textContent = ""), 2500);
+      }
+
+      function updateGoal() {
+        const target = getTarget();
+        const done = getDone();
+        $("#goalText").innerHTML = `<b>${done.size}/${target}</b> сегодня`;
+        $("#goalBar").style.width =
+          Math.min(100, Math.round((done.size / target) * 100)) + "%";
+        $("#dailyTargetText").textContent = target;
+      }
+
+      // ======= Словарь (+удаление) =======
+      function rebuildDictList() {
+        const words = getWords();
+        const box = document.createElement("div");
+
+        if (words.length === 0) {
+          box.className = "hint";
+          box.textContent = "Пока пусто";
+        } else {
+          words
+            .slice()
+            .reverse()
+            .forEach((w) => {
+              const row = document.createElement("div");
+              row.style.margin = "6px 0";
+              row.innerHTML = `
+          <span class="chip">${w.de}</span> 
+          <span class="muted">— ${w.ru}</span>
+          <button class="btn bad" data-del="${w.id}">Удалить</button>
+        `;
+              box.appendChild(row);
+            });
+        }
+
+        const wrap = $("#dictList");
+        wrap.innerHTML = "";
+        wrap.appendChild(box);
+        $("#totalWords").textContent = words.length;
+      }
+      // Обработчик удаления слова
+      $("#dictList").addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-del]");
+        if (!btn) return;
+        const id = btn.dataset.del;
+        if (!confirm("Точно удалить это слово из словаря и прогресса?")) return;
+
+        // 1) Удаляем из словаря
+        const words = getWords().filter((w) => w.id !== id);
+        setWords(words);
+
+        // 2) Удаляем из плана
+        const p = getPlan();
+        p.ids = p.ids.filter((x) => x !== id);
+        setPlan(p);
+
+        // 3) Удаляем из всех "done"
+        const toClean = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith(K.donePrefix)) toClean.push(k);
+        }
+        toClean.forEach((k) => {
+          const set = new Set(LS.load(k, []));
+          if (set.delete(id)) LS.save(k, Array.from(set));
+        });
+
+        // 4) Обновляем UI/статистику
+        rebuildDictList();
+        renderPlan();
+        setupDecks();
+        updateGoal();
+        renderStats();
+      });
+
+      // ======= PLAN =======
+      function renderPlan() {
+        const plan = getPlan();
+        const words = getWords();
+        const list = plan.ids
+          .map((id) => words.find((w) => w.id === id))
+          .filter(Boolean);
+        $("#planHint").textContent = plan.ids.length
+          ? `В плане на ${plan.date}: ${plan.ids.length} слов(а)`
+          : "Сегодняшний план пуст.";
+        const box = document.createElement("div");
+        list.forEach((w) => {
+          const row = document.createElement("div");
+          row.style.margin = "6px 0";
+          row.innerHTML = `<span class="chip">${w.de}</span> <span class="muted">— ${w.ru}</span>`;
+          box.appendChild(row);
+        });
+        const wrap = $("#planList");
+        wrap.innerHTML = "";
+        wrap.appendChild(box);
+      }
+      function fillPlan() {
+        const target = getTarget();
+        const words = getWords();
+        const done = getDone();
+        const pool = words.filter((w) => !done.has(w.id));
+        const ids = pool.slice(0, target).map((w) => w.id);
+        setPlan({ date: todayStr(), ids });
+        renderPlan();
+        setupDecks();
+        updateGoal();
+      }
+
+      // ======= FLASHCARDS =======
+      let fcQueue = [];
+      let fcCurrent = null;
+      function setupFlash() {
+        const plan = getPlan();
+        const done = getDone();
+        const words = getWords().filter(
+          (w) => plan.ids.includes(w.id) && !done.has(w.id)
+        );
+        fcQueue = shuffle(words);
+        fcCurrent = null;
+        $("#fcDeckEmpty").style.display = words.length ? "none" : "block";
+        $("#fcDeck").style.display = words.length ? "block" : "none";
+        $("#fcLeft").textContent = words.length;
+        $("#fcTrans").hidden = true;
+        $("#showTrans").disabled = false;
+        if (words.length) nextFC();
+      }
+      function nextFC() {
+        fcCurrent = fcQueue.shift();
+        if (!fcCurrent) {
+          setupFlash();
+          return;
+        }
+        $("#fcWord").textContent = fcCurrent.de;
+        $("#fcTrans").textContent = fcCurrent.ru;
+        $("#fcTrans").hidden = true;
+      }
+      $("#showTrans").addEventListener("click", () => {
+        $("#fcTrans").hidden = false;
+        $("#showTrans").disabled = true;
+      });
+      $("#fcAgain").addEventListener("click", () => {
+        if (fcCurrent) {
+          fcQueue.push(fcCurrent);
+          nextFC();
+          bumpStat("wrong");
+        }
+      });
+      $("#fcGood").addEventListener("click", () => {
+        if (!fcCurrent) return;
+        addDone(fcCurrent.id);
+        bumpStat("correct");
+        $("#fcLeft").textContent = +$("#fcLeft").textContent - 1;
+        updateGoal();
+        nextFC();
+      });
+
+      // ======= TYPING =======
+      let tyQueue = [];
+      let tyCurrent = null;
+      function setupTyping() {
+        const plan = getPlan();
+        const done = getDone();
+        const words = getWords().filter(
+          (w) => plan.ids.includes(w.id) && !done.has(w.id)
+        );
+        tyQueue = shuffle(words);
+        tyCurrent = null;
+        $("#tyEmpty").style.display = words.length ? "none" : "block";
+        $("#tyWrap").style.display = words.length ? "block" : "none";
+        $("#tyLeft").textContent = words.length;
+        if (words.length) nextTy();
+      }
+      function nextTy() {
+        tyCurrent = tyQueue.shift();
+        if (!tyCurrent) {
+          setupTyping();
+          return;
+        }
+        $("#tyPrompt").textContent = tyCurrent.ru;
+        $("#tyInput").value = "";
+        $("#tyFeedback").textContent = "";
+        $("#tyInput").focus();
+      }
+      function norm(s) {
+        return s.trim().toLowerCase().replace(/\s+/g, " ");
+      }
+      function equalDe(a, b) {
+        const m = { ä: "ae", ö: "oe", ü: "ue", ß: "ss" };
+        const x = (s) => norm(s).replace(/[äöüß]/g, (ch) => m[ch] || ch);
+        return x(a) === x(b);
+      }
+      $("#tyCheck").addEventListener("click", checkTyping);
+      $("#tyInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          checkTyping();
+        }
+      });
+      $$(".kbd").forEach((b) =>
+        b.addEventListener("click", () => {
+          const ins = b.dataset.ins;
+          const i = $("#tyInput");
+          const start = i.selectionStart,
+            end = i.selectionEnd;
+          const v = i.value;
+          i.value = v.slice(0, start) + ins + v.slice(end);
+          i.focus();
+          i.selectionStart = i.selectionEnd = start + ins.length;
+        })
+      );
+      function checkTyping() {
+        if (!tyCurrent) return;
+        const user = $("#tyInput").value;
+        if (equalDe(user, tyCurrent.de)) {
+          $("#tyFeedback").innerHTML = `✅ Верно: <b>${tyCurrent.de}</b>`;
+          addDone(tyCurrent.id);
+          bumpStat("typedCorrect");
+          $("#tyLeft").textContent = +$("#tyLeft").textContent - 1;
+          updateGoal();
+          setTimeout(nextTy, 450);
+        } else {
+          $(
+            "#tyFeedback"
+          ).innerHTML = `❌ Неверно. Правильно: <b>${tyCurrent.de}</b>`;
+          bumpStat("wrong");
+          setTimeout(nextTy, 900);
+        }
+      }
+
+      // ======= AUDIO =======
+      const player = new Audio();
+      function playFor(w) {
+        if (!w) return;
+        if (w.audio) {
+          try {
+            player.src = w.audio;
+            player.play();
+            return;
+          } catch (e) {}
+        }
+        if ("speechSynthesis" in window) {
+          const u = new SpeechSynthesisUtterance(w.de);
+          const v =
+            speechSynthesis
+              .getVoices()
+              .find((v) => /de(-|_|$)/i.test(v.lang)) || null;
+          if (v) u.voice = v;
+          u.lang = "de-DE";
+          speechSynthesis.speak(u);
+        }
+      }
+      $("#fcPlay").addEventListener("click", () => playFor(fcCurrent));
+      $("#tyPlay").addEventListener("click", () => playFor(tyCurrent));
+
+      // ======= ARTIKEL TRAINER =======
+      let arQueue = [],
+        arCurrent = null;
+      function setupArtikel() {
+        const plan = getPlan();
+        const done = getDone();
+        const words = getWords().filter(
+          (w) => plan.ids.includes(w.id) && !done.has(w.id)
+        );
+        const nouns = words.filter((w) => /^(der|die|das)\s+/i.test(w.de));
+        arQueue = shuffle(nouns);
+        $("#arEmpty").style.display = nouns.length ? "none" : "block";
+        $("#arWrap").style.display = nouns.length ? "block" : "none";
+        $("#arLeft").textContent = nouns.length;
+        arCurrent = null;
+        if (nouns.length) nextAr();
+      }
+      function nextAr() {
+        arCurrent = arQueue.shift();
+        if (!arCurrent) {
+          setupArtikel();
+          return;
+        }
+        $("#arPrompt").textContent = arCurrent.de.replace(/^\w+\s+/, "_____ ");
+      }
+      $("#tab-artikel").addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-ans]");
+        if (!b || !arCurrent) return;
+        const ans = b.dataset.ans;
+        const correct = new RegExp("^" + ans + "\\s", "i").test(arCurrent.de);
+        if (correct) {
+          addDone(arCurrent.id);
+          bumpStat("correct");
+          $("#arLeft").textContent = +$("#arLeft").textContent - 1;
+          updateGoal();
+          nextAr();
+        } else {
+          bumpStat("wrong");
+          b.classList.add("bad");
+          setTimeout(() => b.classList.remove("bad"), 300);
+        }
+      });
+
+      // ======= LEARNED TAB =======
+      function listLearned(date) {
+        const ids = Array.from(getDone(date));
+        const words = getWords();
+        const box = document.createElement("div");
+        if (!ids.length) {
+          box.className = "hint";
+          box.textContent = "Пока нет данных";
+        }
+        ids.forEach((id) => {
+          const w = words.find((x) => x.id === id);
+          if (!w) return;
+          const row = document.createElement("div");
+          row.style.margin = "6px 0";
+          row.innerHTML = `<span class="chip">${w.de}</span> <span class="muted">— ${w.ru}</span>
+        <button class="btn" data-act="play" data-id="${w.id}">▶</button>
+        <button class="btn" data-act="return" data-id="${w.id}">↩ вернуть</button>
+        <button class="btn" data-act="delete" data-id="${w.id}">🗑 удалить</button>`;
+          box.appendChild(row);
+        });
+        const wrap = $("#learnedList");
+        wrap.innerHTML = "";
+        wrap.appendChild(box);
+      }
+      function addToPlanToday(id) {
+        const p = getPlan();
+        if (!p.ids.includes(id)) {
+          p.ids.push(id);
+          setPlan(p);
+        }
+      }
+      function deleteWordById(id) {
+        const words = getWords().filter((w) => w.id !== id);
+        setWords(words);
+        const p = getPlan();
+        p.ids = p.ids.filter((x) => x !== id);
+        setPlan(p);
+        const keys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith(K.donePrefix)) keys.push(k);
+        }
+        keys.forEach((k) => {
+          const set = new Set(LS.load(k, []));
+          if (set.delete(id)) LS.save(k, Array.from(set));
+        });
+      }
+      $("#learnedToday").addEventListener("click", () => {
+        $("#learnedDate").value = todayStr();
+        listLearned(todayStr());
+      });
+      $("#learnedDate").addEventListener("change", (e) =>
+        listLearned(e.target.value)
+      );
+      $("#tab-learned").addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-act]");
+        if (!btn) return;
+        const id = btn.dataset.id;
+        const date = $("#learnedDate").value || todayStr();
+        const w = getWords().find((x) => x.id === id);
+        if (btn.dataset.act === "play" && w) playFor(w);
+        if (btn.dataset.act === "return") {
+          const set = getDone(date);
+          set.delete(id);
+          LS.save(K.donePrefix + date, Array.from(set));
+          addToPlanToday(id);
+          updateGoal();
+          listLearned(date);
+          setupDecks();
+          renderPlan();
+        }
+        if (btn.dataset.act === "delete") {
+          deleteWordById(id);
+          updateGoal();
+          listLearned(date);
+          rebuildDictList();
+          renderPlan();
+          setupDecks();
+        }
+      });
+
+      // ======= ADD / BULK =======
+      function addWord(de, ru) {
+        de = de.trim();
+        ru = ru.trim();
+        if (!de || !ru) return false;
+        const words = getWords();
+        const id = de.toLowerCase();
+        if (words.some((w) => w.id === id)) return false;
+        const audio = ($("#wAudio")?.value || "").trim();
+        const obj = { id, de, ru, createdAt: Date.now() };
+        if (audio) obj.audio = audio;
+        words.push(obj);
+        setWords(words);
+        rebuildDictList();
+        renderPlan();
+        setupDecks();
+        return true;
+      }
+      $("#wAdd").addEventListener("click", () => {
+        const ok = addWord($("#wDe").value, $("#wRu").value);
+        toast(
+          $("#wHint"),
+          ok ? "Добавлено!" : "Проверьте поля (возможно, дубль)"
+        );
+        if (ok) {
+          $("#wDe").value = "";
+          $("#wRu").value = "";
+          $("#wAudio").value = "";
+        }
+      });
+      $("#bulkAdd").addEventListener("click", () => {
+        const lines = $("#bulk")
+          .value.split(/\n+/)
+          .map((s) => s.trim())
+          .filter(Boolean);
+        let n = 0;
+        lines.forEach((line) => {
+          const m = line.split(/\s*[—:-;]\s*|\s*;\s*/);
+          if (m.length >= 2) {
+            if (addWord(m[0], m.slice(1).join(" – "))) n++;
+          }
+        });
+        toast($("#bulkHint"), n ? `Добавлено: ${n}` : "Ничего не распознано");
+        if (n) $("#bulk").value = "";
+      });
+
+      // ======= WIPE (полный сброс) =======
+      function wipeAll() {
+        localStorage.removeItem(K.words);
+        localStorage.removeItem(K.stats);
+        localStorage.removeItem(K.target);
+        localStorage.removeItem(K.plan);
+        const toDel = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith(K.donePrefix)) toDel.push(k);
+        }
+        toDel.forEach((k) => localStorage.removeItem(k));
+      }
+
+      // ======= IMPORT / EXPORT =======
+      $("#exportBtn").addEventListener("click", () => {
+        const data = {
+          words: getWords(),
+          stats: getStats(),
+          target: getTarget(),
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: "application/json",
+        });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "worttrainer_backup.json";
+        a.click();
+      });
+      $("#importBtn").addEventListener("click", () => {
+        const f = $("#importFile").files[0];
+        if (!f) {
+          toast($("#importHint"), "Выберите файл");
+          return;
+        }
+        const replaceAll = $("#importReplace")?.checked;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const data = JSON.parse(reader.result);
+
+            if (replaceAll) wipeAll(); // Полная очистка старых данных
+
+            // 1) Слова и параметры
+            const words = Array.isArray(data.words) ? data.words : [];
+            setWords(words);
+            if (data.stats && typeof data.stats === "object")
+              setStats(data.stats);
+            else setStats({});
+            if (typeof data.target === "number") setTarget(+data.target);
+            else setTarget(30);
+
+            // 2) Авто-план на сегодня из импортированных слов
+            const target = getTarget();
+            const ids = words.map((w) => w.id).slice(0, target); // возьмём ровно цель (30)
+            setPlan({ date: todayStr(), ids });
+
+            // 3) Обновляем UI
+            rebuildDictList();
+            renderPlan();
+            setupDecks();
+            renderStats();
+            updateGoal();
+            toast(
+              $("#importHint"),
+              "Импортировано и сформирован план на сегодня"
+            );
+          } catch (e) {
+            console.error(e);
+            toast($("#importHint"), "Ошибка импорта: неверный JSON");
+          }
+        };
+        reader.readAsText(f);
+      });
+
+      // ======= TABS =======
+      $$(".tabbtn").forEach((b) =>
+        b.addEventListener("click", () => {
+          $$(".tabbtn").forEach((x) => x.classList.remove("active"));
+          b.classList.add("active");
+          const id = b.dataset.tab;
+          $$("main section").forEach((s) => s.classList.remove("active"));
+          $("#tab-" + id).classList.add("active");
+          if (id === "flash") setupFlash();
+          if (id === "type") setupTyping();
+          if (id === "stats") renderStats();
+          if (id === "artikel") setupArtikel();
+          if (id === "learned") {
+            $("#learnedDate").value = todayStr();
+            listLearned(todayStr());
+          }
+        })
+      );
+
+      // ======= STATS =======
+      function bumpStat(kind) {
+        const d = todayStr();
+        const s = getStats();
+        s[d] = s[d] || { learned: 0, correct: 0, wrong: 0, typedCorrect: 0 };
+        if (kind === "correct") s[d].correct++;
+        if (kind === "wrong") s[d].wrong++;
+        if (kind === "typedCorrect") {
+          s[d].typedCorrect++;
+          s[d].correct++;
+        }
+        s[d].learned = getDone(d).size;
+        setStats(s);
+        renderStats();
+      }
+      function renderStats() {
+        const s = getStats();
+        const d = todayStr();
+        $("#todayCorrect").textContent = s[d]?.correct || 0;
+        $("#todayWrong").textContent = s[d]?.wrong || 0;
+        const keys = Object.keys(s)
+          .filter((k) => /\d{4}-\d{2}-\d{2}/.test(k))
+          .sort()
+          .slice(-14);
+        const tbody = document.createElement("tbody");
+        keys.reverse().forEach((k) => {
+          const row = document.createElement("tr");
+          const rec = s[k];
+          row.innerHTML = `<td>${k}</td><td>${
+            rec.learned || 0
+          }</td><td class="right muted">верн.: ${rec.correct || 0} / ошиб.: ${
+            rec.wrong || 0
+          }</td>`;
+          tbody.appendChild(row);
+        });
+        const old = $("#histBody");
+        old.replaceWith(tbody);
+        tbody.id = "histBody";
+        $("#streak").textContent = calcStreak();
+      }
+      function calcStreak() {
+        const s = getStats();
+        const target = getTarget();
+        let streak = 0;
+        let date = new Date();
+        for (let i = 0; i < 365; i++) {
+          const ds = date.toISOString().slice(0, 10);
+          if (s[ds]?.learned >= target) {
+            streak++;
+            date.setDate(date.getDate() - 1);
+          } else break;
+        }
+        return streak;
+      }
+
+      // ======= UTIL =======
+      function shuffle(a) {
+        const x = a.slice();
+        for (let i = x.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [x[i], x[j]] = [x[j]];
+        }
+        return x;
+      }
+
+      // ======= INIT =======
+      function setupDecks() {
+        setupFlash();
+        setupTyping();
+      }
+      function init() {
+        const p = getPlan();
+        if (p.date !== todayStr()) setPlan({ date: todayStr(), ids: [] });
+        $("#targetInput").value = getTarget();
+        $("#saveTarget").addEventListener("click", () => {
+          setTarget(+$("#targetInput").value || 30);
+          updateGoal();
+          renderStats();
+          toast($("#planHint"), "Цель сохранена");
+        });
+        $("#planFill").addEventListener("click", fillPlan);
+
+        rebuildDictList();
+        renderPlan();
+        setupDecks();
+        renderStats();
+        updateGoal();
+
+        if ("speechSynthesis" in window) {
+          speechSynthesis.getVoices();
+        }
+      }
+      init();
+
+      // ======= ACCESSIBILITY (горячие клавиши флешкарт) =======
+      document.addEventListener("keydown", (e) => {
+        if (!$("#tab-flash").classList.contains("active")) return;
+        if (e.key === " ") {
+          e.preventDefault();
+          $("#showTrans").click();
+        }
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          $("#fcAgain").click();
+        }
+        if (e.key === "ArrowRight" || e.key === "Enter") {
+          e.preventDefault();
+          $("#fcGood").click();
+        }
+      });
+    </script>
+  </body>
+</html>

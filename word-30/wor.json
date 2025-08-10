@@ -1,0 +1,177 @@
+{
+  "words": [
+    {
+      "id": "hallo",
+      "de": "Hallo",
+      "ru": "привет",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "guten tag",
+      "de": "Guten Tag",
+      "ru": "добрый день",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "guten morgen",
+      "de": "Guten Morgen",
+      "ru": "доброе утро",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "guten abend",
+      "de": "Guten Abend",
+      "ru": "добрый вечер",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "gute nacht",
+      "de": "Gute Nacht",
+      "ru": "спокойной ночи",
+      "createdAt": 1754764800000
+    },
+
+    {
+      "id": "wie geht es dir?",
+      "de": "Wie geht es dir?",
+      "ru": "как у тебя дела?",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "wie geht es ihnen?",
+      "de": "Wie geht es Ihnen?",
+      "ru": "как у Вас дела? (вежливо)",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "wie geht es euch?",
+      "de": "Wie geht es euch?",
+      "ru": "как у вас дела? (мн.ч.)",
+      "createdAt": 1754764800000
+    },
+
+    {
+      "id": "es geht",
+      "de": "Es geht",
+      "ru": "нормально; пойдёт",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "danke",
+      "de": "Danke",
+      "ru": "спасибо",
+      "createdAt": 1754764800000
+    },
+
+    {
+      "id": "entschuldigung",
+      "de": "Entschuldigung",
+      "ru": "извините; простите",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "entschuldigen sie bitte",
+      "de": "Entschuldigen Sie bitte",
+      "ru": "извините, пожалуйста (вежл.)",
+      "createdAt": 1754764800000
+    },
+
+    {
+      "id": "darf ich hinein",
+      "de": "Darf ich hinein?",
+      "ru": "можно войти?",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "darf ich hinaus",
+      "de": "Darf ich hinaus?",
+      "ru": "можно выйти?",
+      "createdAt": 1754764800000
+    },
+
+    { "id": "ja", "de": "Ja", "ru": "да", "createdAt": 1754764800000 },
+    { "id": "nein", "de": "Nein", "ru": "нет", "createdAt": 1754764800000 },
+    {
+      "id": "tschüss",
+      "de": "Tschüss",
+      "ru": "пока",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "auf wiedersehen",
+      "de": "Auf Wiedersehen",
+      "ru": "до свидания",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "bis morgen",
+      "de": "Bis morgen",
+      "ru": "до завтра",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "bis bald",
+      "de": "Bis bald",
+      "ru": "до скорого",
+      "createdAt": 1754764800000
+    },
+
+    {
+      "id": "machen",
+      "de": "machen",
+      "ru": "делать",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "spielen",
+      "de": "spielen",
+      "ru": "играть",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "wohnen",
+      "de": "wohnen",
+      "ru": "жить (проживать)",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "hören",
+      "de": "hören",
+      "ru": "слышать; слушать",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "kommen",
+      "de": "kommen",
+      "ru": "приходить",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "lernen",
+      "de": "lernen",
+      "ru": "учить(ся)",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "lieben",
+      "de": "lieben",
+      "ru": "любить",
+      "createdAt": 1754764800000
+    },
+    {
+      "id": "fragen",
+      "de": "fragen",
+      "ru": "спрашивать",
+      "createdAt": 1754764800000
+    },
+    { "id": "lügen", "de": "lügen", "ru": "лгать", "createdAt": 1754764800000 },
+    {
+      "id": "heißen",
+      "de": "heißen",
+      "ru": "называться",
+      "createdAt": 1754764800000
+    }
+  ],
+  "stats": {},
+  "target": 30
+}
